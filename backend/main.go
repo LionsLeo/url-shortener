@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 	"os"
+	"url-shortener/db"
+	"url-shortener/internal/user"
 	"url-shortener/router"
 
 	"github.com/joho/godotenv"
@@ -16,6 +18,14 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
+	//? Connecting to Db
+	dbConn, err := db.InitDb()
+	if err != nil {
+		log.Fatal("Error connecting to database")
+	}
+
+	defer dbConn.Close()
+
 	//? Loading the server address
 	port, isPresent := os.LookupEnv("PORT")
 	if !isPresent {
@@ -24,7 +34,12 @@ func main() {
 
 	addr := "0.0.0.0:" + port
 
-	router.InitRouter()
+	//? Creating the handlers
+	userRep := user.NewUserRepository(dbConn)
+	userSvc := user.NewService(userRep)
+	userHandler := user.NewHandler(userSvc)
+
+	router.InitRouter(userHandler)
 	router.Start(addr)
 
 }

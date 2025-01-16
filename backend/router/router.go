@@ -3,13 +3,14 @@ package router
 import (
 	"net/http"
 	"url-shortener/helper"
+	"url-shortener/internal/user"
 
 	"github.com/gin-gonic/gin"
 )
 
 var r *gin.Engine
 
-func InitRouter() {
+func InitRouter(userHandler *user.Handler) {
 	r = gin.New()
 
 	r.GET("/health", helper.Make(func(c *gin.Context) error {
@@ -21,7 +22,8 @@ func InitRouter() {
 		return nil
 	}))
 
-	// r.POST("/signup", helper.Make(userHandler.SignUpHandler))
+	r.POST("/send-otp", helper.Make(userHandler.SendOtpHandler))
+	r.POST("/verify-otp", helper.Make(userHandler.VerifyOtp))
 }
 
 func Start(addr string) error {
