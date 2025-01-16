@@ -1,2 +1,2 @@
 # url-shortener 🔥🚀
-url-shortener is a full stack application.
+This is a full stack url shortener application made using go lang and flutter
