@@ -50,7 +50,7 @@ func (h *Handler) VerifyOtp(c *gin.Context) error {
 	}
 
 	if claims.Role != "auth-verify-otp" {
-		return helper.NewApiError(http.StatusUnauthorized, fmt.Errorf("Invalid Token"), "")
+		return helper.NewApiError(http.StatusUnauthorized, fmt.Errorf("invalid Token"), "")
 	}
 
 	var u VerifyOtpRequest

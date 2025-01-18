@@ -65,13 +65,13 @@ func (r *Repository) GetOtp(key string, ctx *gin.Context) (string, error) {
 	if err != nil {
 		// If key doesn't exist, you might get a redis.Nil error
 		// or a generic error if there's a connection issue, etc.
-		return "", fmt.Errorf("Could not find the key " + key)
+		return "", fmt.Errorf("%s", "could not find the key "+key)
 	}
 
 	// 4. Unmarshal the JSON into a map (or a struct if you prefer)
 	var data map[string]interface{}
 	if err := json.Unmarshal([]byte(jsonStr), &data); err != nil {
-		return "", fmt.Errorf("Error unmarshalling JSON from Redis " + err.Error())
+		return "", fmt.Errorf("%s", "error unmarshalling JSON from Redis "+err.Error())
 	}
 
 	// 5. Extract the "otp" field
